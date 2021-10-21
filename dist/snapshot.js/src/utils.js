@@ -22,7 +22,7 @@ exports.SNAPSHOT_SUBGRAPH_URL = {
     '4': 'https://api.thegraph.com/subgraphs/name/snapshot-labs/snapshot-rinkeby',
     '42': 'https://api.thegraph.com/subgraphs/name/snapshot-labs/snapshot-kovan'
 };
-exports.SNAPSHOT_SCORE_API = 'https://score.snapshot.org/api/scores';
+exports.SNAPSHOT_SCORE_API = 'http://localhost:3000/api/scores';
 async function call(provider, abi, call, options) {
     const contract = new contracts_1.Contract(call[0], abi, provider);
     try {
