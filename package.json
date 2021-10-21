@@ -1,6 +1,6 @@
 {
   "name": "@snapshot-labs/strategies",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/snapshot-strategies/src/index.js",
   "types": "dist/snapshot-strategies/src/index.d.ts",
   "exports": {
