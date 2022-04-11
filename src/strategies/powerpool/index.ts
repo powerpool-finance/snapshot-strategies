@@ -22,6 +22,15 @@ const abi = [
     type: 'function'
   },
   {
+    "constant": true,
+    "inputs": [{"internalType": "address", "name": "account", "type": "address"}],
+    "name": "getCurrentVotes",
+    "outputs": [{"internalType": "uint96", "name": "", "type": "uint96"}],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     inputs: [],
     name: 'totalSupply',
     outputs: [
@@ -258,7 +267,7 @@ export async function strategy(
     typeof snapshot === 'number' ? snapshot : await getBlockNumber(provider);
   const results = await Promise.all([
     // @ts-ignore
-    cvpBalanceOf(network, provider, addresses, options, blockTag),
+    cvpVotesOf(network, provider, addresses, options, blockTag),
     cvpMiningLP(network, provider, addresses, options, blockTag),
     cvpVestingOf(network, provider, addresses, options, blockTag),
   ]);
@@ -302,19 +311,19 @@ async function cvpVestingOf(network, provider, addresses, options, snapshot) {
   );
 }
 
-async function cvpBalanceOf(network, provider, addresses, options, snapshot) {
+async function cvpVotesOf(network, provider, addresses, options, snapshot) {
   const blockTag = typeof snapshot === 'number' ? snapshot : 'latest';
 
   const calls: any = addresses.map((address) => [
     options.token,
-    'balanceOf',
+    'getCurrentVotes',
     [address]
   ]);
 
-  const balances = await multicall(network, provider, abi, calls, {blockTag});
+  const votes = await multicall(network, provider, abi, calls, {blockTag});
   return Object.fromEntries(
     addresses.map((address, i) => {
-      return [address, parseFloat(formatUnits(balances[i].toString()))];
+      return [address, parseFloat(formatUnits(votes[i].toString()))];
     })
   );
 }
